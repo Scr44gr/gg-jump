@@ -1,11 +1,14 @@
 from arepy.ecs.systems import System
 from arepy.event_manager import EventManager
-from arepy.event_manager.handlers.collision_event_handler import CollisionEventHandler
-from arepy.event_manager.handlers.keyboard_event_handler import KeyboardEventHandler
+from arepy.event_manager.handlers.collision_event_handler import \
+    CollisionEventHandler
+from arepy.event_manager.handlers.keyboard_event_handler import \
+    KeyboardEventHandler
 from glm import vec2
 from sdl2 import SDL_GetTicks64
 
-from ..components import Animation, Collider, KeyboardControlled, Rigidbody, Sprite
+from ..components import (Animation, Collider, KeyboardControlled, Rigidbody,
+                          Sprite)
 from ..events import JumpEndEvent, JumpStartEvent
 
 
@@ -55,7 +58,12 @@ class PlayerMovementSystem(System):
                 event_manager.emit(JumpStartEvent(entity, SDL_GetTicks64()))
                 return
 
-            if is_space_released and is_colliding:
+            if (
+                is_space_released
+                and is_colliding
+                and not is_a_key_pressed
+                and not is_d_key_pressed
+            ):
                 self.is_jumping = True
                 event_manager.emit(JumpEndEvent(entity, delta_time))
                 return
@@ -96,5 +104,4 @@ class PlayerMovementSystem(System):
         rigidbody.velocity.y -= (
             keyboard_controlled.jump_force * keyboard_controlled.jump_speed
         ) % 150
-
-        keyboard_controlled.jump_force = 2.0
+        keyboard_controlled.jump_force = 1.0

@@ -13,8 +13,8 @@ class KeyboardControlled(Component):
         left_velocity: vec2 = vec2(-1.0, 0.0),
         right_velocity: vec2 = vec2(1.0, 0.0),
         jump_force: float = 1.0,
-        jump_speed: float = 0.1,
-        jump_factor: float = 1.0,
+        jump_speed: float = 0.5,
+        jump_factor: float = 0.5,
     ) -> None:
         self.up_velocity = up_velocity
         self.down_velocity = down_velocity
